@@ -6,9 +6,13 @@ on differently split datasets.
 import os
 from ultralytics import YOLO
 import torch
+import random
+import numpy as np
 
 # Set seed for reproducibility - still not reproducible :(
 # https://pytorch.org/docs/stable/notes/randomness.html
+random.seed(42)
+np.random.seed(42)
 torch.manual_seed(42)
 torch.use_deterministic_algorithms(True)
 
@@ -39,4 +43,5 @@ if __name__ == "__main__":
 
             # Train the model
             model.train(data=folder_name, optimizer="AdamW", epochs=epochs,
-                        name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
+                        name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd",
+                        workers=0,seed=42)
