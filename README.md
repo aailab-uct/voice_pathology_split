@@ -10,6 +10,7 @@ TODO! fill in the description and citation
 
 For dataset preparation
 - Python
+- tqdm (for progress bar)
 
 For dataset creation (not in scope of this repository)
 - voiced and SVD dataset

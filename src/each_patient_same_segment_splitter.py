@@ -3,8 +3,9 @@ This script takes the same (fifth) segment from each patient in SVD and puts it 
 Other segments from the same patient are put into train set.
 """
 from pathlib import Path
+from tqdm import tqdm
 
-destination_path_spectrogram = Path("datasets", "spectrogram")
+path_to_dataset = Path("datasets", "spectrogram")
 
 dataset_path = Path("datasets", "patients_same_segment_both_datasets")
 dataset_path.mkdir(exist_ok=True)
@@ -13,7 +14,7 @@ dataset_path.joinpath("train", "unhealthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "unhealthy").mkdir(exist_ok=True, parents=True)
 
-for spectrogram_path in destination_path_spectrogram.glob("*.*"):
+for spectrogram_path in tqdm(list(path_to_dataset.glob("*.*"))):
     if "unhealthy" in str(spectrogram_path):
         if "00005" in str(spectrogram_path):
             dest = dataset_path.joinpath("test", "unhealthy")

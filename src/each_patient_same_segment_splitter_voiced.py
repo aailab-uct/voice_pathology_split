@@ -3,8 +3,9 @@ This script takes the same (fifth) segment from each patient in voiced and puts 
 Other segments from the same patient are put into train set.
 """
 from pathlib import Path
+from tqdm import tqdm
 
-destination_path_spectrogram = Path("datasets", "spectrogram_voiced")
+path_to_dataset = Path("datasets", "spectrogram_voiced")
 
 dataset_path = Path("datasets", "patients_same_segment_both_datasets_voiced")
 dataset_path.mkdir(exist_ok=True)
@@ -13,7 +14,7 @@ dataset_path.joinpath("train", "nonhealthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "nonhealthy").mkdir(exist_ok=True, parents=True)
 
-for spectrogram_path in destination_path_spectrogram.glob("*.*"):
+for spectrogram_path in tqdm(list(path_to_dataset.glob("*.*"))):
     if "nonhealthy" in str(spectrogram_path):
         if "00005" in str(spectrogram_path):
             dest = dataset_path.joinpath("test", "nonhealthy")
