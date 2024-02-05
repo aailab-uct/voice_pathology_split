@@ -54,6 +54,7 @@ Then, run the docker image:
 
 ```
 docker run -it --runtime=nvidia --gpus all \
+    --network none \
     --mount 'type=bind,source=[path1],target=/app/runs' \
     --mount 'type=bind,source=[path2],target=/app/datasets' \
     --shm-size=1g voice_pathology_split

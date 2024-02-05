@@ -1,21 +1,10 @@
 """
-This script is used to test the classification performance of the YOLOv5 model
+This script is used to test the classification performance of the YOLOv8 model
 on differently split datasets.
 """
 #pylint: disable=use-maxsplit-arg,invalid-name
 import os
 from ultralytics import YOLO
-import torch
-import random
-import numpy as np
-
-# Set seed for reproducibility - still not reproducible :(
-# https://pytorch.org/docs/stable/notes/randomness.html
-random.seed(42)
-np.random.seed(42)
-torch.manual_seed(42)
-torch.use_deterministic_algorithms(True)
-
 
 if __name__ == "__main__":
     datasets = ["datasets/patients_wise_datasets_voiced",
@@ -34,7 +23,7 @@ if __name__ == "__main__":
               "yolov8l-cls.pt",
               "yolov8x-cls.pt"]
 
-    epochs = 10
+    epochs = 300
 
     for folder_name in datasets:
         for model_name in models:
@@ -42,6 +31,5 @@ if __name__ == "__main__":
             model = YOLO(os.path.join(".","yolov8",model_name))
 
             # Train the model
-            model.train(data=folder_name, optimizer="AdamW", epochs=epochs,
-                        name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd",
-                        workers=0,seed=42, auto_augment=None)
+            model.train(data=folder_name, optimizer="SGD", epochs=epochs,
+                        name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
