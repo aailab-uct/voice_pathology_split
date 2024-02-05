@@ -19,5 +19,7 @@ VOLUME /app/runs
 
 VOLUME /app/datasets
 
+ENV CUBLAS_WORKSPACE_CONFIG=:4096:8
+
 # Run classification_runner.py when the container launches
 CMD ["python", "classification_runner.py"]
