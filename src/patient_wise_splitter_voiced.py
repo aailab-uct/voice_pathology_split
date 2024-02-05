@@ -26,7 +26,7 @@ rnd.shuffle(patients_ids)
 test = rnd.sample(patients_ids, 24)
 remove_from_test_set = rnd.sample(test, 4)
 remove_segments = [rnd.randint(0, 9, ) for _ in range(4)]
-for spectrogram_path in tqdm(list(path_to_dataset.glob("*.*"))):
+for spectrogram_path in tqdm(sorted(list(path_to_dataset.glob("*.*")))):
     if "nonhealthy" in str(spectrogram_path):
         if str(spectrogram_path.name).lstrip("voice")[:3] not in test:
             dest = dataset_path.joinpath("train", "nonhealthy")

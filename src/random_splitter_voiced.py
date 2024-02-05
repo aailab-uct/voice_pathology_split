@@ -8,8 +8,7 @@ from tqdm import tqdm
 rnd = random.Random(42)
 
 path_to_dataset = Path("datasets", "spectrogram_voiced")
-files = list(path_to_dataset.glob("*.*"))
-rnd.shuffle(files)
+files = sorted(list(path_to_dataset.glob("*.*")))
 test = rnd.sample(files, k=208)
 
 
@@ -20,7 +19,7 @@ dataset_path.joinpath("train", "nonhealthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "nonhealthy").mkdir(exist_ok=True, parents=True)
 
-for spectrogram_path in tqdm(list(path_to_dataset.glob("*.*"))):
+for spectrogram_path in tqdm(files):
     if "nonhealthy" in str(spectrogram_path):
         if spectrogram_path in test:
             dest = dataset_path.joinpath("test", "nonhealthy")

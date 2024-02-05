@@ -48,5 +48,9 @@ names2 = set(names)
 print("The difference between the two sets is:")
 print(names1 - names2)
 
-print("SHA256 hash of all list of files is:")
-print(hashlib.sha256(str(names).encode()).hexdigest())
+print("SHA256 hash of list of files is:")
+print(hashlib.sha256(str(sorted(names)).encode('utf-8')).hexdigest())
+
+with open('datasets_filelist.txt', 'w') as f:
+    for name in sorted(names):
+        f.write(name + '\n')
