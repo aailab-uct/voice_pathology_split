@@ -29,7 +29,7 @@ if __name__ == "__main__":
               "yolov8l-cls.pt",
               "yolov8x-cls.pt"]
 
-    epochs = 300
+    epochs = 10
 
     for folder_name in datasets:
         for model_name in models:
@@ -37,5 +37,5 @@ if __name__ == "__main__":
             model = YOLO(os.path.join(".","yolov8",model_name))
 
             # Train the model
-            model.train(data=folder_name, optimizer="SGD", epochs=epochs,
+            model.train(data=folder_name, optimizer="AdamW", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd",)
