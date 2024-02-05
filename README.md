@@ -22,7 +22,27 @@ For dataset creation (not in scope of this repository)
 
 ## Dataset preparation
 
-TODO! add dataset preparation description and instructions
+The dataset is not included in this repository. It can be created using the voiced and SVD dataset, which are converted into spectograms. Spectograms from SVD are stored in ```datasets/spectogram``` and are named in the following fashion:
+
+    ```svdadult[four_digit_number]_[healthy/unhealthy]_[frequency]_[number_of_the_split].png```
+
+Spectograms from voiced are stored in ```datasets/spectogram_voiced``` and are named in the following fashion:
+
+    ```voice[three_digit_number]_[healthy/nonhealthy]_[frequency]_[number_of_the_split].png```
+
+To split the dataset into train and test set, run the following command:
+
+```python src/split_all.py```
+
+or run the individual script.
+
+After the split, the dataset is ready for use. If you want to verify the split is reproducible, run the following command:
+
+```python src/test_reproducibility_split.py```
+
+and compare the datasets_filelist_pub.txt or the SHA256 hash of filenames.
+
+```df5994930be1229837a730e3c6036fe4554ad9ba84c74f79e7f3bf43dd308f28```
 
 ## Docker usage
 
