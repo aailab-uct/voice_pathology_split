@@ -44,4 +44,4 @@ if __name__ == "__main__":
             # Train the model
             model.train(data=folder_name, optimizer="AdamW", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd",
-                        workers=0,seed=42)
+                        workers=0,seed=42, auto_augment=None)
