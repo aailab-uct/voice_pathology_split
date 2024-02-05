@@ -9,11 +9,12 @@ COPY yolov8 /app/yolov8
 
 
 # Install pre-requisites
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
-
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install any needed packages using pip
-RUN pip install ultralytics
+COPY requirements.txt /app
+RUN pip install --no-cache-dir -r requirements.txt
 
 VOLUME /app/runs
 
