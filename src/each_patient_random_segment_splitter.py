@@ -6,7 +6,7 @@ from pathlib import Path
 import random
 from tqdm import tqdm
 
-random.seed(42)
+rnd = random.Random(42)
 
 path_to_dataset = Path("datasets", "spectrogram")
 
@@ -31,7 +31,7 @@ for spectrogram_path_str in tqdm(sorted_paths):
     spectrogram_path = path_to_dataset.joinpath(spectrogram_path_str)
     if spectrogram_path_str.lstrip("svdadult")[:4] != actual_patient:
         actual_patient = spectrogram_path_str.lstrip("svdadult")[:4]
-        random_segment = random.randint(0, 8)
+        random_segment = rnd.randint(0, 8)
     if "unhealthy" in str(spectrogram_path):
         if f"{random_segment:05}" in str(spectrogram_path):
             dest = dataset_path.joinpath("test", "unhealthy")

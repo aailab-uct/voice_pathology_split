@@ -5,12 +5,12 @@ from pathlib import Path
 import random
 from tqdm import tqdm
 
-random.seed(42)
+rnd = random.Random(42)
 
 path_to_dataset = Path("datasets", "spectrogram_voiced")
 files = list(path_to_dataset.glob("*.*"))
-random.shuffle(files)
-test = random.sample(files, k=208)
+rnd.shuffle(files)
+test = rnd.sample(files, k=208)
 
 
 dataset_path = Path("datasets", "patients_random_segments_datasets_voiced")
