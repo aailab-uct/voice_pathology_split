@@ -7,13 +7,16 @@ TODO! fill in the description and citation
 - Docker
 - Nvidia GPU (for speed reasons)
 - Nvidia Docker (for GPU support in Docker)
+- Prepared dataset (see below)
+- yolo weights (not included - see below)
 
 For dataset preparation
 - Python
 - tqdm (for progress bar)
+- created voiced and SVD spectrogram dataset
 
-For dataset creation (not in scope of this repository)
-- voiced and SVD dataset
+For spectogram dataset creation (not in scope of this repository)
+- voiced and SVD wav dataset
 - Python
 - scipy
 - numpy
@@ -46,6 +49,8 @@ and compare the datasets_filelist_pub.txt or the SHA256 hash of filenames.
 
 ## Docker usage
 
+First aquire the yolo weights and place them in ```yolov8``` folder in root of this repository. We used the ```yolov8[nsmlx]-cls.pt``` weights from the [ultralytics release v0.0.0](https://github.com/ultralytics/assets/releases/tag/v0.0.0). If you want to use different weights, change the name in the ```src/classification_runner.py``` file.
+
 First, build the docker image:
 
 ```docker build -t voice_pathology_split .```
@@ -60,6 +65,6 @@ docker run -it --runtime=nvidia --gpus all \
     --shm-size=1g voice_pathology_split
 ```
 
-[path1] is the path to the folder where the runs will be stored (useful for easier access) and [path2] is the path to the folder where the datasets are stored. Without ```--runtime=nvidia --gpus all``` the GPU will not be used (please note that runtime name can vary). ```--shm-size=1g``` is needed for the docker container to have enough memory to run the code, otherwise it will crash.
+where [path1] is the path to the folder where the runs will be stored (useful for easier access) and [path2] is the path to the folder where the datasets are stored. Without ```--runtime=nvidia --gpus all``` the GPU will not be used (please note that runtime name can vary). ```--shm-size=1g``` is needed for the docker container to have enough memory to run the code, otherwise it will crash.
 
 The computation will take a while (more than 2 days). Feel free to change used datasets and yolo weights in the ```src/classification_runner.py``` file (do so before building the image).
