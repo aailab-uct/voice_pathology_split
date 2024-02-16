@@ -49,7 +49,7 @@ and compare the datasets_filelist_pub.txt or the SHA256 hash of filenames.
 
 ## Docker usage
 
-First aquire the yolo weights and place them in ```yolov8``` folder in root of this repository. We used the ```yolov8[nsmlx]-cls.pt``` weights from the [ultralytics release v0.0.0](https://github.com/ultralytics/assets/releases/tag/v0.0.0). If you want to use different weights, change the name in the ```src/classification_runner.py``` file.
+First aquire the yolo weights and place them in ```yolov8``` folder in root of this repository. We used the ```yolov8[nsmlx]-cls.pt``` weights from the [ultralytics release v0.0.0](https://github.com/ultralytics/assets/releases/tag/v0.0.0). If you want to use different weights, change the name in the ```src/classification_runner.py``` file. Ultralytics package also requires the ```yolov8n.pt``` weights in the same folder.
 
 First, build the docker image:
 
