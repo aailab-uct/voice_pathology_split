@@ -69,7 +69,6 @@ def wav2spectrogram(source_path: Path, destination_path: Path, fft_window_length
     plot_axes.pcolormesh(times, frequencies, 10 * np.log10(spectrogram), cmap="Greys")
     plt.savefig(destination_path.joinpath(f"{source_path.stem}.png"), format="png",
                 bbox_inches='tight', pad_inches=0, dpi=300)
-    print("saving...")
     plt.close("all")
 
 

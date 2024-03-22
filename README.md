@@ -5,6 +5,7 @@ Sedláková, Martin Chovanec, Noriyasu Homma and Jan Vrba.
 
 ## Requirements
 
+For running experiments
 - Docker
 - Nvidia GPU (for speed reasons)
 - Nvidia Docker (for GPU support in Docker)
@@ -21,6 +22,11 @@ For spectogram dataset creation
 - numpy
 - matplotlib
 - pydub
+- tqdm (for progress bar)
+- scikit-learn
+- pandas
+
+The ```requirements.txt``` file is NOT representative of the requirements for the whole project, but only for the Docker image. For the dataset preparation, you need to use the ```requirements_dataset.txt``` file.
 
 ## Dataset preparation
 
@@ -28,7 +34,26 @@ The dataset is not included in this repository due to the license reason, but it
 
 First you need to download the Saarbruecken Voice Database [available here](https://stimmdb.coli.uni-saarland.de/index.php4). You need to download only normal /a/ vowel encoded as wav. As there is a limit of files you can download in one archive, we suggest you download first females, then males and combine the downloaded recordings in one folder. Then aquire the VOICED dataset [available here](https://doi.org/10.13026/C25Q2N). Create the ```datasets``` folder and put recordings into folders ```datasets/svd``` and ```datasets/voiced```.
 
-To create the spectograms, run the following command:
+At this step, we assume following folder structure:
+    
+```
+datasets/
+    svd/
+        1-a_n.wav
+        2-a_n.wav
+        ...
+    voiced/
+        RECORDS
+        SHA256SUMS.txt
+        voice001-info.txt
+        voice001.dat
+        voice001.wav
+        voice001.txt
+        voice002-info.txt
+        ...
+```
+
+To create the spectograms and to drop recordings of minors, run the following command:
 
 ```
 python src/create_spectograms.py
@@ -46,13 +71,15 @@ Spectograms from VOICED are stored in ```datasets/spectogram_voiced``` and are n
 voice[three_digit_number]_[healthy/nonhealthy]_[frequency]_[number_of_the_split].png
 ```
 
+There will be other folders created in the ```datasets``` folder, but they are not important for the next steps, and you can delete them. The number of operations is quite high and are not parallelized, so the script will take a while to finish. Some operations are redundant, but we decided not to optimize this part of the code, as it is needed only once. Note that we DO NOT provide posibility to check if the created spectograms are the same as in the paper, but as the script is deterministic, the results should be the same. Only reason for different results would be different version of dataset (namely SVD), and this is something, which is checked by next step (by comparing number and names of files).
+
 To split the dataset into train and test sets for each experiment, run the following command:
 
 ```
 python src/reproducibility_split.py
 ```
 
-After the split, the dataset is ready for use. If you want to verify the split is same as ours, compare the output of the script with following SHA256 hash of filenames.
+After the split, the dataset is ready for use. If you want to verify the split is same as ours, compare the output of the script with following SHA256 hash of filenames. We also include the list of files in the ```datasets``` folder in the ```datasets_files.txt``` file.
 
 ```
 df5994930be1229837a730e3c6036fe4554ad9ba84c74f79e7f3bf43dd308f28
