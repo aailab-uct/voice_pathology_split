@@ -9,42 +9,46 @@ import shutil
 from utilities.converters import wav2spectrogram, txt2wav
 
 # SVD wav to txt
+print("Transforming files SVD wav files to txt files...")
 svd_path = Path("datasets","svd")
-folders = [x for x in svd_path.iterdir()]
-list_arrays = []
-list_names = []
+svd_path_renamed = Path("datasets","svdadult_renamed")
+svd_path_renamed.mkdir(parents=True, exist_ok=True)
 scaler = MinMaxScaler((-1, 1))
 
-for file in svd_path.glob("*.wav"):
+with open("svd_filelist.txt", "r") as f:
+  data = f.readlines()
+
+downloaded_files = [i.stem for i in svd_path.glob("*.wav")]
+
+not_found = []
+
+for line in tqdm(data, unit="file"):
+  id,label = line.split(",")
+  label = label.strip()
+  filename = id+ "-a_n"
+  if not filename in downloaded_files:
+    not_found.append(filename)
+    continue
+  file = svd_path.joinpath(filename + ".wav")
+
   file_array = read(file)
   file_array_float = np.array(file_array[1], dtype="f")
   file_array_norm = scaler.fit_transform(file_array_float.reshape(-1, 1))
-  list_arrays.append(file_array_norm)
-  list_names.append(file.name.split("-")[0])
 
-info = pd.read_csv("svd_file_information.csv", index_col=0)
-info.talkersex = info.talkersex.replace("w", "f")
-info.pathologies = info.pathologies.fillna("healthy")
-info.loc[info.pathologies != "healthy", "pathologies"] = "unhealthy"
+  file_name = svd_path_renamed.joinpath(f'svdadult{id:0>4}_{label}_50000.txt')
+  np.savetxt(file_name, file_array_norm, fmt="%f", delimiter='\n')
+  
 
-svd_path_renamed = Path("datasets","svdadult_renamed")
-if not svd_path_renamed.exists():
-  svd_path_renamed.mkdir()
+if not_found:
+  print("The following SVD recordings were not found:")
+  for file in not_found:
+    print(file)
+  print("You need to download them before proceeding.")
+  if input("Do you want still to proceed with spectogram creation? (y/n)") != "y":
+    exit()
+else:
+  print("All files found!")
 
-print("Transforming files SVD wav files to txt files...")
-for index, (array, name) in tqdm(enumerate(zip(list_arrays, list_names)), 
-                                 total=len(list_arrays),
-                                 unit="file"):
-  info_row = info[info.sessionid == int(name)]
-  if info_row.shape[0] != 1:
-    raise Exception("info_row is supposed to have only one row!")
-
-  if info.talkerage.values[index] >= 18:
-    file_name = svd_path_renamed.joinpath(f'svdadult{name:0>4}_{info_row.pathologies.values[0]}_50000.txt')
-    np.savetxt(file_name, array, fmt="%f", delimiter='\n')
-  else:
-    #print(f"Record {name} skipped.")
-    continue
 
 # Rename VOICED files
 voiced_path = Path("datasets","voiced")

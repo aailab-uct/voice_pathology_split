@@ -53,7 +53,7 @@ datasets/
         ...
 ```
 
-To create the spectograms and to drop recordings of minors, run the following command:
+To create the spectograms with same samples as we used, run the following command:
 
 ```
 python src/create_spectograms.py
@@ -71,7 +71,7 @@ Spectograms from VOICED are stored in ```datasets/spectogram_voiced``` and are n
 voice[three_digit_number]_[healthy/nonhealthy]_[frequency]_[number_of_the_split].png
 ```
 
-There will be other folders created in the ```datasets``` folder, but they are not important for the next steps, and you can delete them. The number of operations is quite high and are not parallelized, so the script will take a while to finish. Some operations are redundant, but we decided not to optimize this part of the code, as it is needed only once. Note that we DO NOT provide posibility to check if the created spectograms are the same as in the paper, but as the script is deterministic, the results should be the same. Only reason for different results would be different version of dataset (namely SVD), and this is something, which is checked by next step (by comparing number and names of files).
+There will be other folders created in the ```datasets``` folder, but they are not important for the next steps, and you can delete them. The number of operations is quite high and are not parallelized, so the script will take a while to finish. Some operations are redundant, but we decided not to optimize this part of the code, as it is needed only once.
 
 To split the dataset into train and test sets for each experiment, run the following command:
 
@@ -84,6 +84,8 @@ After the split, the dataset is ready for use. If you want to verify the split i
 ```
 df5994930be1229837a730e3c6036fe4554ad9ba84c74f79e7f3bf43dd308f28
 ```
+
+There is no posibility to verify the content of the files, as the content is not included in the repository.
 
 ## Docker usage
 

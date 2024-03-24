@@ -34,3 +34,6 @@ for file in tqdm(files):
 print("SHA256 hash of list of files is:")
 print(hashlib.sha256(str(sorted(names)).encode('utf-8')).hexdigest())
 
+with open("datasets.txt", "w") as f:
+    for name in names:
+        f.write(name + "\n")
