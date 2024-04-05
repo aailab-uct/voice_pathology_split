@@ -32,7 +32,7 @@ The ```requirements.txt``` file is NOT representative of the requirements for th
 
 The dataset is not included in this repository due to the license reason, but it can be created from publicly available datasets. It is composed of VOICED and Saarbruecken Voice Database, which are converted into spectograms. 
 
-First you need to download the Saarbruecken Voice Database [available here](https://stimmdb.coli.uni-saarland.de/index.php4). You need to download only normal /a/ vowel encoded as wav. As there is a limit of files you can download in one archive, we suggest you download first females, then males and combine the downloaded recordings in one folder. Then aquire the VOICED dataset [available here](https://doi.org/10.13026/C25Q2N). Create the ```datasets``` folder and put recordings into folders ```datasets/svd``` and ```datasets/voiced```.
+First you need to download the Saarbruecken Voice Database [available here](https://stimmdb.coli.uni-saarland.de/index.php4). You need to download only normal /a/ vowel encoded as wav. As there is a limit of files you can download in one archive, we suggest you download first females, then males and combine the downloaded recordings in one folder. Additionaly, you can download only recordings with ids listed in [svd_filelist.txt](svd_filelist.txt) because other recordings are not used. Then aquire the VOICED dataset [available here](https://doi.org/10.13026/C25Q2N). Create the ```datasets``` folder and put recordings into folders ```datasets/svd``` and ```datasets/voiced```.
 
 At this step, we assume following folder structure:
     
