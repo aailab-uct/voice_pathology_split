@@ -40,9 +40,24 @@ for spectrogram_path in tqdm(sorted(list(path_to_dataset.glob("*.*")))):
     src =spectrogram_path.read_bytes()
     dest.joinpath(spectrogram_path.name).write_bytes(src)
 
-# randomly delete 8 files to get 208 samples in test set
-test_set_paths = list(dataset_path.joinpath("test").glob("**/*"))
-samples_to_delete = rnd.sample(test_set_paths, 8)
+# # randomly delete 8 files to get 208 samples in test set
+# test_set_paths = list(dataset_path.joinpath("test").glob("**/*"))
+# samples_to_delete = rnd.sample(test_set_paths, 8)
+
+## As the glob is not deterministic and we forgot about it,
+## we will remove the files that we know we should remove
+samples_to_delete = [
+    dataset_path.joinpath("test", "nonhealthy", "voice001_nonhealthy_8000_00006.png"),
+    dataset_path.joinpath("test", "nonhealthy", "voice069_nonhealthy_8000_00003.png"),
+    dataset_path.joinpath("test", "nonhealthy", "voice163_nonhealthy_8000_00004.png"),
+    dataset_path.joinpath("test", "nonhealthy", "voice188_nonhealthy_8000_00006.png"),
+    dataset_path.joinpath("test", "nonhealthy", "voice188_nonhealthy_8000_00000.png"),
+    dataset_path.joinpath("test", "nonhealthy", "voice076_nonhealthy_8000_00002.png"),
+    dataset_path.joinpath("test", "healthy", "voice096_healthy_8000_00004.png"),
+    dataset_path.joinpath("test", "healthy", "voice177_healthy_8000_00001.png"),
+]
 
 for to_delete in samples_to_delete:
     to_delete.unlink()
+
+
