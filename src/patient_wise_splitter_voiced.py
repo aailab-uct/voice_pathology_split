@@ -1,6 +1,6 @@
 """
-The correct way to split the dataset. Use this script to split the voiced into train and test sets.
-All spectrograms from each patient should be in either train or test set.
+Use this script to split the voiced into train and test sets.
+All spectrograms from each recording should be in either train or test set.
 """
 # pylint: disable=bad-str-strip-call
 from pathlib import Path

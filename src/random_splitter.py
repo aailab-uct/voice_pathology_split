@@ -12,7 +12,7 @@ files = sorted(list(path_to_dataset.glob("*.*")))
 test = rnd.sample(files, k=1985)
 
 
-dataset_path = Path("datasets", "patients_random_segments_datasets")
+dataset_path = Path("datasets", "recordings_random_segments_datasets")
 dataset_path.mkdir(exist_ok=True)
 dataset_path.joinpath("train", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "unhealthy").mkdir(exist_ok=True, parents=True)

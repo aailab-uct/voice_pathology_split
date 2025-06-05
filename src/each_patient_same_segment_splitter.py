@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 path_to_dataset = Path("datasets", "spectrogram")
 
-dataset_path = Path("datasets", "patients_same_segment_both_datasets")
+dataset_path = Path("datasets", "recordings_same_segment_both_datasets")
 dataset_path.mkdir(exist_ok=True)
 dataset_path.joinpath("train", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "unhealthy").mkdir(exist_ok=True, parents=True)

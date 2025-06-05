@@ -12,10 +12,12 @@ if __name__ == "__main__":
                 "patients_random_segment_both_datasets_voiced",
                 "patients_random_segments_datasets_voiced",
                 "patients_same_segment_both_datasets_voiced",
-                # "patients_wise_datasets",
-                # "patients_random_segment_both_datasets",
-                # "patients_random_segments_datasets",
-                # "patients_same_segment_both_datasets",
+                "patients_wise_datasets",
+                "patients_wise_with_duplicities_datasets",
+                "patients_random_segment_both_datasets",
+                "recordings_random_segments_datasets",
+                "recordings_same_segment_both_datasets",
+                "recordings_wise_datasets",
                 ]
 
     models = ["yolov8n-cls.pt",
