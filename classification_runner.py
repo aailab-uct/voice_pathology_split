@@ -13,6 +13,10 @@ PATH_DATASETS = Path("datasets")
 
 if __name__ == "__main__":
     results_table = pd.DataFrame(columns=["Approach/dataset", "Architecture", "ACC", "SPE", "TN", "TP", "FN", "FP"])
+
+    with open("yaml_template.txt", "r") as template:
+        yaml = template.read()
+
     datasets = ['patients_wise_split_svd_no_duplicities',
                 'patients_wise_split_svd_with_duplicities',
                 'patients_wise_split_voiced',
@@ -44,6 +48,10 @@ if __name__ == "__main__":
             model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
             print("#"*30, "Validation", "#"*30)
+
+            with open("test.yaml", "w") as yaml_file:
+                yaml_file.write(yaml.format(path_to_data=folder_name))
+
             results = model.val(data="test.yaml")  # use your custom dataset YAML
 
             TN = results.confusion_matrix.matrix[1][1]
