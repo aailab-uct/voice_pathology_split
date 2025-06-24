@@ -2,5 +2,5 @@ train: patients_wise_split_svd_no_duplicities/train/  # path to training data
 val: patients_wise_split_svd_no_duplicities/test/   # path to validation data
 test: patients_wise_split_svd_no_duplicities/test/   # path to test data
 
-#nc: 2  # number of classes
+nc: 2  # number of classes
 #names: ['healthy', 'unhealthy']  # class names
