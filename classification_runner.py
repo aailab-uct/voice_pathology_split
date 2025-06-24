@@ -48,6 +48,7 @@ if __name__ == "__main__":
             model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
             print("#"*30, "Validation", "#"*30)
+            model = YOLO(os.path.join("runs", "classify", f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd", "weights", "best.pt"))
 
             with open("test.yaml", "w") as yaml_file:
                 yaml_file.write(yaml.format(path_to_data=folder_name))
