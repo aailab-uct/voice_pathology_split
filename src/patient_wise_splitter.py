@@ -1,6 +1,6 @@
 """
-The correct way to split the dataset. Use this script to split the SVD into train and test sets.
-All spectrograms from each patient should be in either train or test set.
+Script for patient-wise splitting. Use this script to split the SVD into train and test sets.
+All spectrograms from each recording should be in either train or test set.
 It uses maximum of one healthy and one unhealthy recording from each patient.
 """
 # pylint: disable=bad-str-strip-call
@@ -8,42 +8,37 @@ from pathlib import Path
 import random
 from tqdm import tqdm
 
+TRAIN_TEST_RATIO = 1/9
 rnd = random.Random(42)
 
-path_to_dataset = Path("..", "datasets", "spectrogram")
-
-dataset_path = Path("..", "datasets", "patients_wise_datasets")
-dataset_path.mkdir(exist_ok=True, parents=True)
+# Path to the spectrograms
+path_to_dataset = Path("..","spectrograms", "svd")
+# Path to final datasets for YOLO training
+dataset_path = Path("..", "datasets", "patients_wise_split_svd_no_duplicities")
 dataset_path.joinpath("train", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "unhealthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "unhealthy").mkdir(exist_ok=True, parents=True)
-
-patients_ids = []
-for spectrogram_path in path_to_dataset.glob("*.*"):
-    patient_id = str(spectrogram_path.name).lstrip('svdadult')[:4]
-    patient_rec_order = str(spectrogram_path.name).split('.')[0].split('_')[-2]
-    if int(patient_rec_order.lstrip('order')) == 0:
-        patients_ids.append(str(spectrogram_path.name).lstrip("svdadult")[:4])
-
+# Extracting patient ids from the files
+patients_ids = [filename.name.lstrip("svdadult")[:4] for filename in path_to_dataset.glob("*.png")]
+# Random shuffling of a list of patient ids so that they are randomly distributed into the training and test sets
 patients_ids = sorted(list(set(patients_ids)))
 rnd.shuffle(patients_ids)
-print(len(patients_ids))
-test = rnd.sample(patients_ids, 184) # 90/10 split
-for spectrogram_path in tqdm(sorted(list(path_to_dataset.glob("*.*")))):
-    spectogram_order = str(spectrogram_path.name).split('.')[0].split('_')[-2]
-    if int(spectogram_order.lstrip('order')) != 0:
-        continue
+# Looping through the list of ids and filling the train/test folders
+folder = "test"
+# counting only the first healthy and pathological files for each patient id
+total_file_count = len(list(path_to_dataset.glob("svdadult*_order00_*.png")))
+for id in tqdm(patients_ids):
+    # Count the ratio of files in a training set to the total number of files
+    test_set_count = len(list(dataset_path.joinpath("test").glob("**/*.png")))
+    # If the count reaches over the train-test split ratio, saving recordings to the train subfolders
+    if (test_set_count / total_file_count >= TRAIN_TEST_RATIO) and (folder == "test"):
+        folder = "train"
+    # Loop through each recording under the id and move it to the correct subfolder
+    # Considering only the file names with order00 in their name as these indicate the first healthy and pathological
+    # recordings for each patient -> ensure only single healthy or pathological recording for each patient id
+    for segment in path_to_dataset.glob(f"svdadult{id}*_order00_*.png"):
+        health_state = segment.name.split("_")[1]
+        src = segment.read_bytes()
+        dataset_path.joinpath(folder, health_state, segment.name).write_bytes(src)
 
-    if "unhealthy" in str(spectrogram_path):
-        if str(spectrogram_path.name).lstrip("svdadult")[:4] not in test:
-            dest = dataset_path.joinpath("train", "unhealthy")
-        else:
-            dest = dataset_path.joinpath("test", "unhealthy")
-    else:
-        if str(spectrogram_path.name).lstrip("svdadult")[:4] not in test:
-            dest = dataset_path.joinpath("train", "healthy")
-        else:
-            dest = dataset_path.joinpath("test", "healthy")
-    src =spectrogram_path.read_bytes()
-    dest.joinpath(spectrogram_path.name).write_bytes(src)

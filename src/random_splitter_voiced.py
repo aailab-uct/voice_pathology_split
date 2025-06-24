@@ -5,30 +5,23 @@ from pathlib import Path
 import random
 from tqdm import tqdm
 
+
+TRAIN_TEST_RATIO = 1/9
 rnd = random.Random(42)
 
-path_to_dataset = Path("datasets", "spectrogram_voiced")
-files = sorted(list(path_to_dataset.glob("*.*")))
-test = rnd.sample(files, k=208)
+path_to_dataset = Path("..", "spectrograms", "voiced")
+segments = list(path_to_dataset.glob("*.png*"))
+test_files = rnd.sample(segments, k=int(TRAIN_TEST_RATIO * len(segments)) + 1)
+train_files = set(segments) - set(test_files)
 
-
-dataset_path = Path("datasets", "recordings_random_segments_datasets_voiced")
-dataset_path.mkdir(exist_ok=True)
+dataset_path = Path("..", "datasets", "segmentation_leakage_random_split_voiced")
 dataset_path.joinpath("train", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "nonhealthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "nonhealthy").mkdir(exist_ok=True, parents=True)
 
-for spectrogram_path in tqdm(files):
-    if "nonhealthy" in str(spectrogram_path):
-        if spectrogram_path in test:
-            dest = dataset_path.joinpath("test", "nonhealthy")
-        else:
-            dest = dataset_path.joinpath("train", "nonhealthy")
-    else:
-        if spectrogram_path in test:
-            dest = dataset_path.joinpath("test", "healthy")
-        else:
-            dest = dataset_path.joinpath("train", "healthy")
-    src =spectrogram_path.read_bytes()
-    dest.joinpath(spectrogram_path.name).write_bytes(src)
+for subset, folder in zip([train_files, test_files], ["train", "test"]):
+    for spectrogram_path in tqdm(subset):
+        health_state = spectrogram_path.name.split("_")[1]
+        src = spectrogram_path.read_bytes()
+        dataset_path.joinpath(folder, health_state, spectrogram_path.name).write_bytes(src)

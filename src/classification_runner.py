@@ -4,29 +4,35 @@ on differently split datasets.
 """
 #pylint: disable=use-maxsplit-arg,invalid-name
 import os
+from pathlib import Path
 from ultralytics import YOLO
+import pandas as pd
+
+
+PATH_DATASETS = Path("..", "datasets")
 
 if __name__ == "__main__":
-    datasets = [
-                "patients_wise_datasets_voiced",
-                "patients_random_segment_both_datasets_voiced",
-                "patients_random_segments_datasets_voiced",
-                "patients_same_segment_both_datasets_voiced",
-                "patients_wise_datasets",
-                "patients_wise_with_duplicities_datasets",
-                "patients_random_segment_both_datasets",
-                "recordings_random_segments_datasets",
-                "recordings_same_segment_both_datasets",
-                "recordings_wise_datasets",
+    results_table = pd.DataFrame(columns=["Approach/dataset", "Architecture", "ACC", "SPE", "TN", "TP", "FN", "FP"])
+    datasets = ['patients_wise_split_svd_no_duplicities',
+                'patients_wise_split_svd_with_duplicities',
+                'patients_wise_split_voiced',
+                'segmentation_leakage_random_segment_of_each_recording_svd',
+                'segmentation_leakage_random_segment_of_each_recording_voiced',
+                'segmentation_leakage_random_split_svd',
+                'segmentation_leakage_random_split_voiced',
+                'segmentation_leakage_recording_wise_split_svd',
+                'segmentation_leakage_same_segment_of_each_recording_svd',
+                'segmentation_leakage_same_segment_of_each_recording_voiced'
                 ]
 
     models = ["yolov8n-cls.pt",
               "yolov8s-cls.pt",
               "yolov8m-cls.pt",
               "yolov8l-cls.pt",
-              "yolov8x-cls.pt"]
+              "yolov8x-cls.pt"
+              ]
 
-    epochs = 300
+    epochs = 1
     
     for folder_name in datasets:
         # folder_abs_path = os.path.join(ABS_PATH, folder_name)
@@ -35,5 +41,18 @@ if __name__ == "__main__":
             model = YOLO(os.path.join(".","models",model_name))
 
             # Train the model
-            model.train(data=folder_name, optimizer="SGD", epochs=epochs,
+            model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
+
+            results = model.val()  # use your custom dataset YAML
+
+            TN = results.confusion_matrix.matrix[1][1]
+            TP = results.confusion_matrix.matrix[0][0]
+            FN = results.confusion_matrix.matrix[0][1]
+            FP = results.confusion_matrix.matrix[1][0]
+            ACC = (TP + TN) / (TP + FP + FN + FP)
+            SEN = TP / (TP + FN)
+            SPE = TN / (TN + FP)
+
+            results_table.loc[len(results_table.index)] = [folder_name, model_name, ACC, SPE, TN, TP, FN, FP]
+            results_table.to_csv("segmentation_leakage_results.csv")
