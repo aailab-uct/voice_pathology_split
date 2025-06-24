@@ -43,7 +43,7 @@ if __name__ == "__main__":
             # Train the model
             model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
-
+            print("#"*30, "Validation", "#"*30)
             results = model.val()  # use your custom dataset YAML
 
             TN = results.confusion_matrix.matrix[1][1]
