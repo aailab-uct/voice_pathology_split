@@ -9,7 +9,7 @@ from ultralytics import YOLO
 import pandas as pd
 
 
-PATH_DATASETS = Path("..", "datasets")
+PATH_DATASETS = Path("datasets")
 
 if __name__ == "__main__":
     results_table = pd.DataFrame(columns=["Approach/dataset", "Architecture", "ACC", "SPE", "TN", "TP", "FN", "FP"])
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         # folder_abs_path = os.path.join(ABS_PATH, folder_name)
         for model_name in models:
             # Load a model
-            model = YOLO(os.path.join(".","models",model_name))
+            model = YOLO(os.path.join("src", "models", model_name))
 
             # Train the model
             model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
