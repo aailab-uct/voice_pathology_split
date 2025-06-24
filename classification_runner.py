@@ -36,7 +36,7 @@ if __name__ == "__main__":
               "yolov8x-cls.pt"
               ]
 
-    epochs = 1
+    epochs = 300
     
     for folder_name in datasets:
         # folder_abs_path = os.path.join(ABS_PATH, folder_name)
@@ -55,10 +55,10 @@ if __name__ == "__main__":
 
             results = model.val(data="test.yaml")  # use your custom dataset YAML
 
-            TN = results.confusion_matrix.matrix[1][1]
-            TP = results.confusion_matrix.matrix[0][0]
-            FN = results.confusion_matrix.matrix[0][1]
-            FP = results.confusion_matrix.matrix[1][0]
+            TP = results.confusion_matrix.matrix[1][1]
+            TN = results.confusion_matrix.matrix[0][0]
+            FP = results.confusion_matrix.matrix[0][1]
+            FN = results.confusion_matrix.matrix[1][0]
             ACC = (TP + TN) / (TP + FP + FN + FP)
             SEN = TP / (TP + FN)
             SPE = TN / (TN + FP)
