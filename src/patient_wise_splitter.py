@@ -10,10 +10,10 @@ from tqdm import tqdm
 
 rnd = random.Random(42)
 
-path_to_dataset = Path("datasets", "spectrogram")
+path_to_dataset = Path("..", "datasets", "spectrogram")
 
-dataset_path = Path("datasets", "patients_wise_datasets")
-dataset_path.mkdir(exist_ok=True)
+dataset_path = Path("..", "datasets", "patients_wise_datasets")
+dataset_path.mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "unhealthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("test", "healthy").mkdir(exist_ok=True, parents=True)
@@ -28,6 +28,7 @@ for spectrogram_path in path_to_dataset.glob("*.*"):
 
 patients_ids = sorted(list(set(patients_ids)))
 rnd.shuffle(patients_ids)
+print(len(patients_ids))
 test = rnd.sample(patients_ids, 184) # 90/10 split
 for spectrogram_path in tqdm(sorted(list(path_to_dataset.glob("*.*")))):
     spectogram_order = str(spectrogram_path.name).split('.')[0].split('_')[-2]

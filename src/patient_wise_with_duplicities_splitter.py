@@ -10,9 +10,9 @@ from tqdm import tqdm
 
 rnd = random.Random(42)
 
-path_to_dataset = Path("datasets", "spectrogram")
+path_to_dataset = Path("..", "datasets", "spectrogram")
 
-dataset_path = Path("datasets", "patients_wise_with_duplicities_datasets")
+dataset_path = Path("..", "datasets", "patients_wise_with_duplicities_datasets")
 dataset_path.mkdir(exist_ok=True)
 dataset_path.joinpath("train", "healthy").mkdir(exist_ok=True, parents=True)
 dataset_path.joinpath("train", "unhealthy").mkdir(exist_ok=True, parents=True)
