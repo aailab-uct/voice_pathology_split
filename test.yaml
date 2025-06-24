@@ -2,5 +2,5 @@ train: datasets/patients_wise_split_svd_no_duplicities/train/  # path to trainin
 val: datasets/patients_wise_split_svd_no_duplicities/test/   # path to validation data
 test: datasets/patients_wise_split_svd_no_duplicities/test/   # path to test data
 
-#nc: 6  # number of classes
-#names: ['chicken post', 'chicken pre', 'liver pre', 'liverpost', 'muscle post', 'muscle pre']  # class names
+nc: 2  # number of classes
+names: ['healthy', 'unhealthy']  # class names
