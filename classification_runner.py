@@ -44,9 +44,7 @@ if __name__ == "__main__":
             model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
             print("#"*30, "Validation", "#"*30)
-            results = model.val(
-                data={'val':str(PATH_DATASETS.joinpath(folder_name, "test")),
-                'names': ['unhealthy' if "svdadult" in str(PATH_DATASETS.joinpath(folder_name, "test")) else "nonhealthy",'healthy']})  # use your custom dataset YAML
+            results = model.val(Path(folder_name).joinpath("test"))  # use your custom dataset YAML
 
             TN = results.confusion_matrix.matrix[1][1]
             TP = results.confusion_matrix.matrix[0][0]
