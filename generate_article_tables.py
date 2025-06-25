@@ -8,6 +8,8 @@ from pathlib import Path
 
 # Path to datasets and dictionary for renaming dataset folder names to something more suitable for publishing
 PATH_TO_DATASETS = Path("datasets")
+PATH_TO_TABLES = Path("article_tables")
+PATH_TO_TEMPLATES = PATH_TO_TABLES.joinpath("templates")
 DATASET_RENAMING = {
     "patients_wise_split_svd_no_duplicities": "patient-wise split without duplicite recordings",
     "patients_wise_split_svd_with_duplicities": "patient-wise split with duplicite recordings",
@@ -45,7 +47,7 @@ for folder in PATH_TO_DATASETS.glob("*"):
 data["split"] = data["split"].apply(lambda x: DATASET_RENAMING[x])
 
 # Loading a template which will be used in the article
-with open(Path("article_tables", "templates", "table_counts_header.tex"), "r") as template:
+with open(PATH_TO_TEMPLATES.joinpath("table_counts_header.tex"), "r") as template:
     article_table = template.read()
 # Generating separate tables for SVD and VOICED
 for dataset in ["SVD", "VOICED"]:
@@ -54,5 +56,44 @@ for dataset in ["SVD", "VOICED"]:
     table_content = "\n\t\t\t".join(data_to_write.to_latex(header=False, index=False, float_format="%.4f").split("\n")[3:-3])
     table_content = article_table.format(table_content=table_content, dataset=dataset, dataset_lower=dataset.lower())
     # Saving the final table as LATEX file
-    with open(Path("article_tables", f"table_counts_{dataset.lower()}.tex"), "w") as table:
+    with open(PATH_TO_TABLES.joinpath(f"table_counts_{dataset.lower()}.tex"), "w") as table:
+        table.write(table_content)
+
+##################### Result tables ######################
+
+# Loading results
+results = (pd.read_csv("segmentation_leakage_results.csv").drop(columns=["Unnamed: 0"])
+                                                          .rename(columns={"Approach/dataset": "split"}))
+# Creating the dataset column to split the results based on the used dataset
+results["dataset"] = results["split"].apply(lambda x: "VOICED" if "voiced" in x else "SVD")
+# Correcting a potential error in saving the results
+if "SEN" not in results.columns:
+    results["SEN"] = results.TP / (results.TP + results.FN)
+# Renaming the dataset name to be more explanatory in the article
+results["split"] = results["split"].apply(lambda x: DATASET_RENAMING[x])
+# Changing the data type to integer since these represent counts
+cols_dtype_to_change = ["TN", "TP", "FN", "FP"]
+results[cols_dtype_to_change] = results[cols_dtype_to_change].astype(int)
+# Changing the order of columns to a preferred one
+col_order = ["split", "Architecture", "ACC", "SPE", "SEN", "TN", "TP", "FN", "FP", "dataset"]
+results = results[col_order]
+# Loading the table template
+with open(PATH_TO_TEMPLATES.joinpath("table_results_header.tex"), "r") as template:
+    article_table = template.read()
+# Looping through both datasets to create tables for the article
+for dataset in ["SVD", "VOICED"]:
+    # Grouping the results by split strategy and architecture, just for cosmetics
+    results_to_export = (results[results.dataset == "SVD"].drop(columns=["dataset"])
+                                                          .groupby(["split", "Architecture"]).sum())
+    table_content = results_to_export.to_latex(header=False, float_format="%.4f")
+    # Getting rid of the declaration of tabular and outer rules as we need only the values
+    table_content = "\n\t\t\t".join(table_content.split("\n")[4:-4])
+    # Switching the clines for midrules
+    table_content = table_content.replace("\\cline{1-9}", "\\midrule")
+    # Changing the multirow vertical alignment and horizontal size to respect the size of the column
+    table_content = table_content.replace("[t]", "").replace("{*}", "{10em}")
+    # Placing data in the template
+    table_content = article_table.format(table_content=table_content, dataset=dataset, dataset_lower=dataset.lower())
+    # Saving the final table as LATEX file
+    with open(PATH_TO_TABLES.joinpath(f"table_results_{dataset.lower()}.tex"), "w") as table:
         table.write(table_content)
