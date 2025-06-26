@@ -34,9 +34,9 @@ for folder in PATH_TO_DATASETS.glob("*"):
     for subset in ["train", "test"]:
         paths = list(Path(folder, subset).glob("**/*.png"))
         # Healthy segments contain /healthy/ in their path
-        healthy_counts.append(len([s for s in paths if "\\healthy\\" in str(s)]))
+        healthy_counts.append(len([s for s in paths if "_healthy_" in str(s)]))
         # Unhealthy segments contain either /nonhealthy/, or /unhealthy/ in their paths
-        pathological_counts.append(len([s for s in paths if ("\\unhealthy\\" in str(s) or "\\nonhealthy\\" in str(s))]))
+        pathological_counts.append(len([s for s in paths if ("_unhealthy_" in str(s) or "_nonhealthy_" in str(s))]))
     # Ratio of test segments to all used segments -> showing the train-test split ratio is very similar for each split
     # strategy
     ratio = (pathological_counts[1] + healthy_counts[1]) / (sum(healthy_counts) + sum(pathological_counts))
