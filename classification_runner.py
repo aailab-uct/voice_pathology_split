@@ -61,7 +61,7 @@ if __name__ == "__main__":
             TN = results.confusion_matrix.matrix[0][0]
             FP = results.confusion_matrix.matrix[0][1]
             FN = results.confusion_matrix.matrix[1][0]
-            ACC = (TP + TN) / (TP + FP + FN + FP)
+            ACC = (TP + TN) / (TP + TN + FN + FP)
             SEN = TP / (TP + FN)
             SPE = TN / (TN + FP)
 
