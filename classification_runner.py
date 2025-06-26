@@ -12,7 +12,8 @@ import pandas as pd
 PATH_DATASETS = Path("datasets")
 
 if __name__ == "__main__":
-    results_table = pd.DataFrame(columns=["Approach/dataset", "Architecture", "ACC", "SPE", "TN", "TP", "FN", "FP"])
+    results_table = pd.DataFrame(columns=["Approach/dataset", "Architecture", "ACC", "SPE", "SEN", "TN", "TP", "FN",
+                                          "FP"])
 
     with open("yaml_template.txt", "r") as template:
         yaml = template.read()
@@ -48,7 +49,8 @@ if __name__ == "__main__":
             model.train(data=PATH_DATASETS.joinpath(folder_name), optimizer="SGD", epochs=epochs,
                         name=f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd")
             print("#"*30, "Validation", "#"*30)
-            model = YOLO(os.path.join("runs", "classify", f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd", "weights", "best.pt"))
+            model = YOLO(os.path.join("runs", "classify", f"{folder_name}_{model_name.split('.')[0]}_{epochs}_sgd",
+                                      "weights", "best.pt"))
 
             with open("test.yaml", "w") as yaml_file:
                 yaml_file.write(yaml.format(path_to_data=folder_name))
@@ -63,5 +65,5 @@ if __name__ == "__main__":
             SEN = TP / (TP + FN)
             SPE = TN / (TN + FP)
 
-            results_table.loc[len(results_table.index)] = [folder_name, model_name, ACC, SPE, TN, TP, FN, FP]
+            results_table.loc[len(results_table.index)] = [folder_name, model_name, ACC, SPE, SEN, TN, TP, FN, FP]
             results_table.to_csv("segmentation_leakage_results.csv")
