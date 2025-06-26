@@ -1,0 +1,17 @@
+\begin{table}
+    \centering
+    \tiny
+    \begin{tabular}{lrrrrr}
+        \toprule
+        \multirow{2}{*}{Split strategy} & \multicolumn{2}{c}{Pathological segments count} & \multicolumn{2}{c}{Healthy segments count} & \multirow{2}{*}{Test split ratio} \\
+        & Training set & Test set & Training set & Test set & \\
+        \midrule
+            random train-test split & 1204 & 155 & 459 & 54 & 0.1116 \\
+			random segment of each recording in the test set & 1208 & 151 & 456 & 57 & 0.1111 \\
+			patient-wise split & 1215 & 144 & 441 & 72 & 0.1154 \\
+			fifth segment of each recording in the test set & 1208 & 151 & 456 & 57 & 0.1111 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Counts of segments based on the split strategies for VOICED}
+    \label{tab:voiced_counts}
+\end{table}
