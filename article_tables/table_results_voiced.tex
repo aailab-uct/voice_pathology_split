@@ -1,47 +1,31 @@
-\begin{table}
+\begin{table*}
     \centering
-    \tiny
     \begin{tabular}{llrrrrrrr}
         \toprule
          Split strategy & Architecture & ACC & SPE & SEN & TN & TP & FN & FP \\
-        \midrule
-            \multirow{5}{10em}{fifth segment of each recording in the test set} & yolov8l-cls.pt & 1.5177 & 1.0000 & 1.0000 & 687 & 1327 & 0 & 0 \\
-			 & yolov8m-cls.pt & 1.5083 & 0.9942 & 0.9992 & 686 & 1323 & 1 & 4 \\
-			 & yolov8n-cls.pt & 1.4840 & 0.9813 & 0.9962 & 682 & 1314 & 5 & 13 \\
-			 & yolov8s-cls.pt & 1.5101 & 0.9956 & 0.9992 & 686 & 1324 & 1 & 3 \\
-			 & yolov8x-cls.pt & 1.5177 & 1.0000 & 1.0000 & 687 & 1327 & 0 & 0 \\
-			\midrule
-			\multirow{5}{10em}{patient-wise split with duplicite recordings} & yolov8l-cls.pt & 0.7344 & 0.5889 & 0.7398 & 318 & 1092 & 384 & 222 \\
-			 & yolov8m-cls.pt & 0.7371 & 0.5965 & 0.7365 & 306 & 1107 & 396 & 207 \\
-			 & yolov8n-cls.pt & 0.7380 & 0.6000 & 0.7348 & 300 & 1114 & 402 & 200 \\
-			 & yolov8s-cls.pt & 0.7416 & 0.5878 & 0.7514 & 348 & 1070 & 354 & 244 \\
-			 & yolov8x-cls.pt & 0.7526 & 0.5942 & 0.7600 & 366 & 1064 & 336 & 250 \\
-			\midrule
-			\multirow{5}{10em}{patient-wise split without duplicite recordings} & yolov8l-cls.pt & 0.7988 & 0.6258 & 0.7766 & 465 & 730 & 210 & 278 \\
-			 & yolov8m-cls.pt & 0.7716 & 0.6165 & 0.7538 & 434 & 738 & 241 & 270 \\
-			 & yolov8n-cls.pt & 0.7727 & 0.6320 & 0.7353 & 395 & 778 & 280 & 230 \\
-			 & yolov8s-cls.pt & 0.7588 & 0.6256 & 0.7263 & 381 & 780 & 294 & 228 \\
-			 & yolov8x-cls.pt & 0.7611 & 0.6471 & 0.7111 & 341 & 822 & 334 & 186 \\
-			\midrule
-			\multirow{5}{10em}{random segment of each recording in the test set} & yolov8l-cls.pt & 1.4877 & 0.9912 & 0.9925 & 677 & 1321 & 10 & 6 \\
-			 & yolov8m-cls.pt & 1.4933 & 0.9898 & 0.9955 & 681 & 1320 & 6 & 7 \\
-			 & yolov8n-cls.pt & 1.4458 & 0.9709 & 0.9857 & 668 & 1307 & 19 & 20 \\
-			 & yolov8s-cls.pt & 1.4822 & 0.9926 & 0.9895 & 673 & 1322 & 14 & 5 \\
-			 & yolov8x-cls.pt & 1.4989 & 0.9913 & 0.9970 & 683 & 1321 & 4 & 6 \\
-			\midrule
-			\multirow{5}{10em}{random train-test split} & yolov8l-cls.pt & 1.4649 & 0.9939 & 0.9949 & 651 & 1353 & 7 & 4 \\
-			 & yolov8m-cls.pt & 1.4506 & 0.9834 & 0.9941 & 650 & 1346 & 8 & 11 \\
-			 & yolov8n-cls.pt & 1.3814 & 0.9545 & 0.9786 & 629 & 1327 & 29 & 30 \\
-			 & yolov8s-cls.pt & 1.4470 & 0.9833 & 0.9926 & 648 & 1346 & 10 & 11 \\
-			 & yolov8x-cls.pt & 1.4137 & 0.9571 & 0.9918 & 647 & 1328 & 11 & 29 \\
-			\midrule
-			\multirow{5}{10em}{recording-wise split} & yolov8l-cls.pt & 0.8840 & 0.6625 & 0.8412 & 526 & 1028 & 194 & 268 \\
-			 & yolov8m-cls.pt & 0.8308 & 0.6728 & 0.7763 & 403 & 1100 & 317 & 196 \\
-			 & yolov8n-cls.pt & 0.8410 & 0.7028 & 0.7677 & 376 & 1137 & 344 & 159 \\
-			 & yolov8s-cls.pt & 0.8503 & 0.6852 & 0.7852 & 418 & 1104 & 302 & 192 \\
-			 & yolov8x-cls.pt & 0.8268 & 0.6593 & 0.7825 & 420 & 1079 & 300 & 217 \\
+            \midrule
+			\multirow{5}{10em}{sixth segment of each recording in the test set} & yolov8n-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
+			 & yolov8s-cls.pt & 0.9952 & 1.0000 & 0.9934 & 56 & 151 & 1 & 0 \\
+			 & yolov8m-cls.pt & 0.9952 & 1.0000 & 0.9934 & 56 & 151 & 1 & 0 \\
+			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
+			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\\midrule
+			\multirow{5}{10em}{random segment of each recording in the test set} & yolov8n-cls.pt & 0.9856 & 0.9655 & 0.9933 & 56 & 149 & 1 & 2 \\
+			 & yolov8s-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
+			 & yolov8m-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
+			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
+			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\\midrule
+			\multirow{5}{10em}{random train-test split} & yolov8n-cls.pt & 0.9904 & 0.9815 & 0.9935 & 53 & 154 & 1 & 1 \\
+			 & yolov8s-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\
+			 & yolov8m-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\
+			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\
+			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\\midrule
+			\multirow{5}{10em}{patient-wise split} & yolov8n-cls.pt & 0.6991 & 0.8889 & 0.6908 & 8 & 143 & 64 & 1 \\
+			 & yolov8s-cls.pt & 0.7130 & 0.8125 & 0.7050 & 13 & 141 & 59 & 3 \\
+			 & yolov8m-cls.pt & 0.6713 & 0.5556 & 0.6763 & 5 & 140 & 67 & 4 \\
+			 & yolov8l-cls.pt & 0.6944 & 0.5882 & 0.7143 & 20 & 130 & 52 & 14 \\
+			 & yolov8x-cls.pt & 0.7083 & 0.7368 & 0.7056 & 14 & 139 & 58 & 5 \\
         \bottomrule
     \end{tabular}
     \caption{Classification results for VOICED}
     \label{tab:voiced_results}
-\end{table}
+\end{table*}

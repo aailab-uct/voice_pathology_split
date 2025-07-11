@@ -1,6 +1,5 @@
-train: patients_wise_split_svd_no_duplicities/train/  # path to training data
-val: patients_wise_split_svd_no_duplicities/test/   # path to validation data
-test: patients_wise_split_svd_no_duplicities/test/   # path to test data
+train: datasets/segmentation_leakage_recording_wise_split_svd/train/
+val: datasets/segmentation_leakage_recording_wise_split_svd/test/
+test: datasets/segmentation_leakage_recording_wise_split_svd/test/
 
-nc: 2  # number of classes
-#names: ['healthy', 'unhealthy']  # class names
+nc: 2

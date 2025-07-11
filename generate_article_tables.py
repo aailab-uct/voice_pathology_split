@@ -83,7 +83,7 @@ with open(PATH_TO_TEMPLATES.joinpath("table_results_header.tex"), "r") as templa
 # Looping through both datasets to create tables for the article
 for dataset in ["SVD", "VOICED"]:
     # Grouping the results by split strategy and architecture, just for cosmetics
-    results_to_export = (results[results.dataset == "SVD"].drop(columns=["dataset"])
+    results_to_export = (results[results.dataset == dataset].drop(columns=["dataset"])
                                                           .groupby(["split", "Architecture"]).sum())
     table_content = results_to_export.to_latex(header=False, float_format="%.4f")
     # Getting rid of the declaration of tabular and outer rules as we need only the values
