@@ -160,6 +160,10 @@ def split_scenario_3(db: str, ext_val_samples: dict):
     for _, row in tqdm(data.iterrows(), total=data.shape[0]):
         shutil.copy(src=row["source_path"], dst=row["destination_path"])
 
+    # Save the information about the source and destination paths to the dataset_lists folder
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_3.csv"),
+                                                     index=False)
+
 
 # Scenarios 4 (VOICED) and 5 (SVD) -> since algorithmically, they are the same
 def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict):
@@ -192,3 +196,59 @@ def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict):
     print(f"Copying data for {db}_scenario_{scenario_number}...")
     for _, row in tqdm(data.iterrows(), total=data.shape[0]):
         shutil.copy(src=row["source_path"], dst=row["destination_path"])
+
+    # Save the information about the source and destination paths to the dataset_lists folder
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_{scenario_number}.csv"),
+                                                     index=False)
+
+# Scenarios 4 (SVD) and 6 -> since algorithmically, they are similar
+def split_scenario_4_svd_6(ext_val_samples: dict, exclude_duplicates=False):
+    ext_val_recordings = ext_val_samples["svd"]
+    # Get the list of all spectrograms
+    data = pd.DataFrame(list(Path("spectrograms", "svd").glob("*.png")), columns=["source_path"])
+    # If exclude_duplicates is True, delete any segments with order above 0, indicating multiple recordings of the same patient and health state
+    if exclude_duplicates:
+        data["order"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[-3]))
+        mask = data["order"] == 0
+        data = data[mask].drop(columns=["order"])
+        scenario_number = 6
+    # Extract the name, recording ID, segment number and class as these are necessary for distribution to the dataset subdirectories
+    data["name"] = data["source_path"].apply(lambda x: x.name)
+    data["recording_id"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[5]))
+    data["segment"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[-1]))
+    data["class"] = data["source_path"].apply(lambda x: x.stem.split("_")[3])
+    data["patient_id"] = data["source_path"].apply(lambda x: x.stem.split("_")[2])
+    data["subset"] = None
+    # Change the subset for recordings selected for external validation
+    mask = data["recording_id"].isin(ext_val_recordings) & (data["segment"] == 4)
+    data.loc[mask, "subset"] = "test"
+    # Delete the other segments of recordings selected for external validation
+    mask = data["recording_id"].isin(ext_val_recordings) & (data["segment"] != 4)
+    data = data[~mask]
+    # Randomly shuffle the list of unique patient IDs
+    unique_patients = data.loc[pd.isna(data["subset"]), "patient_id"].unique()
+    # Create a Generator instance with a specified seed
+    rng = np.random.default_rng(seed=42)
+    rng.shuffle(unique_patients)
+    # Iteratively add all segments belonging to the consecutive patient IDs to test set until reaching ~ 1:9 split ratio
+    for patient_id in unique_patients:
+        data.loc[data["patient_id"] == patient_id, "subset"] = "val"
+        test_ratio = data[data["subset"] == "val"].shape[0] / (data[(data["subset"] == "val") | (pd.isna(data["subset"]))].shape[0])
+        if test_ratio > 0.1:
+            break
+    # Change the subset for the remaining recordings which do not have any subset values
+    data.loc[pd.isna(data["subset"]), "subset"] = "train"
+    # Define the destination path based on the subset information
+    scenario_number = 6 if exclude_duplicates else 4
+    data["destination_path"] = data.apply(lambda row: Path("datasets", f"svd_scenario_{scenario_number}",
+                                                           row["subset"], row["class"], row["name"]), axis=1)
+
+    # Loop through the rows and copy from source path to the destination path
+    print(f"Copying data for svd_scenario_{scenario_number}...")
+    for _, row in tqdm(data.iterrows(), total=data.shape[0]):
+        shutil.copy(src=row["source_path"], dst=row["destination_path"])
+
+    # Save the information about the source and destination paths to the dataset_lists folder
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"Copying data for "
+                                                                                 f"svd_scenario_{scenario_number}.csv"),
+                                                     index=False)
