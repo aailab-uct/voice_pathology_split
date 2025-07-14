@@ -129,3 +129,66 @@ def split_scenario_2(db: str, ext_val_samples: dict):
     # Save the information about the source and destination paths to the dataset_lists folder
     data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_2.csv"),
                                                      index=False)
+
+# Scenario 3 - Random split of all segments in 9:1 ratio
+def split_scenario_3(db: str, ext_val_samples: dict):
+    ext_val_recordings = ext_val_samples[db]
+    # Get the list of all spectrograms
+    data = pd.DataFrame(list(Path("spectrograms", db).glob("*.png")), columns=["source_path"])
+    # Extract the name, recording ID, segment number and class as these are necessary for distribution to the dataset subdirectories
+    data["name"] = data["source_path"].apply(lambda x: x.name)
+    data["recording_id"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[5]))
+    data["segment"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[-1]))
+    data["class"] = data["source_path"].apply(lambda x: x.stem.split("_")[3])
+    data["subset"] = None
+    # Change the subset for recordings selected for external validation
+    mask = data["recording_id"].isin(ext_val_recordings) & (data["segment"] == 4)
+    data.loc[mask, "subset"] = "test"
+    # Delete the other segments of recordings selected for external validation
+    mask = data["recording_id"].isin(ext_val_recordings) & (data["segment"] != 4)
+    data = data[~mask]
+    # Randomly sample 90% of the remaining segments for the training set
+    sampled_segments = data.loc[pd.isna(data["subset"]), "source_path"].sample(frac=0.9, random_state=42).tolist()
+    # Change the subset for the remaining segments based on whether they are sampled or not
+    data.loc[data["source_path"].isin(sampled_segments), "subset"] = "train"
+    data.loc[pd.isna(data["subset"]), "subset"] = "val"
+    # Define the destination path based on the subset information
+    data["destination_path"] = data.apply(lambda row: Path("datasets", f"{db}_scenario_3", row["subset"], row["class"], row["name"]), axis=1)
+
+    # Loop through the rows and copy from source path to the destination path
+    print(f"Copying data for {db}_scenario_3...")
+    for _, row in tqdm(data.iterrows(), total=data.shape[0]):
+        shutil.copy(src=row["source_path"], dst=row["destination_path"])
+
+
+# Scenarios 4 (VOICED) and 5 (SVD) -> since algorithmically, they are the same
+def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict):
+    ext_val_recordings = ext_val_samples[db]
+    # Get the list of all spectrograms
+    data = pd.DataFrame(list(Path("spectrograms", db).glob("*.png")), columns=["source_path"])
+    # Extract the name, recording ID, segment number and class as these are necessary for distribution to the dataset subdirectories
+    data["name"] = data["source_path"].apply(lambda x: x.name)
+    data["recording_id"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[5]))
+    data["segment"] = data["source_path"].apply(lambda x: int(x.stem.split("_")[-1]))
+    data["class"] = data["source_path"].apply(lambda x: x.stem.split("_")[3])
+    data["subset"] = None
+    # Change the subset for recordings selected for external validation
+    mask = data["recording_id"].isin(ext_val_recordings) & (data["segment"] == 4)
+    data.loc[mask, "subset"] = "test"
+    # Delete the other segments of recordings selected for external validation
+    mask = data["recording_id"].isin(ext_val_recordings) & (data["segment"] != 4)
+    data = data[~mask]
+    # Randomly sample 90% of the remaining recordings for the training set
+    unique_recordings = pd.Series(data.loc[pd.isna(data["subset"]), "recording_id"].unique())
+    sampled_recordings = unique_recordings.sample(frac=0.9, random_state=42).tolist()
+    # Change the subset for the remaining recordings based on whether they are sampled or not
+    data.loc[data["recording_id"].isin(sampled_recordings), "subset"] = "train"
+    data.loc[pd.isna(data["subset"]), "subset"] = "val"
+    # Define the destination path based on the subset information
+    scenario_number = 4 if db == "voiced" else 5
+    data["destination_path"] = data.apply(lambda row: Path("datasets", f"{db}_scenario_{scenario_number}", row["subset"], row["class"], row["name"]), axis=1)
+
+    # Loop through the rows and copy from source path to the destination path
+    print(f"Copying data for {db}_scenario_{scenario_number}...")
+    for _, row in tqdm(data.iterrows(), total=data.shape[0]):
+        shutil.copy(src=row["source_path"], dst=row["destination_path"])

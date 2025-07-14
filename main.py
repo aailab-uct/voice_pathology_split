@@ -2,7 +2,7 @@
 # Utility functions for generating spectrograms from SVD recordings, if missing, afor preparation of datasets for each
 # scenario, and for running the classification on all datasets
 from src.utils.create_spectrograms import create_spectrograms_from_SVD, create_spectrograms_from_VOICED
-from src.split_all import sample_ext_validation, split_scenario_1, split_scenario_2
+from src.split_all import sample_ext_validation, split_scenario_1, split_scenario_2, split_scenario_3, split_scenario_4_voiced_5_svd
 # from src import split_all, classification_runner
 from pathlib import Path
 import pandas as pd
@@ -58,5 +58,7 @@ ext_val_samples = sample_ext_validation()
 
 # Prepare datasets for scenarios 1-4
 for db in ["svd", "voiced"]:
-    split_scenario_1(db, ext_val_samples)
-    split_scenario_2(db, ext_val_samples)
+    # split_scenario_1(db, ext_val_samples)
+    # split_scenario_2(db, ext_val_samples)
+    # split_scenario_3(db, ext_val_samples)
+    split_scenario_4_voiced_5_svd(db, ext_val_samples)
