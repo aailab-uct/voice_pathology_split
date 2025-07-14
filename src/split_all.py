@@ -18,6 +18,8 @@ import numpy as np
 
 PATH_USED_SVD_FILES = Path("misc", "used_svd_recordings.csv")
 PATH_USED_VOICED_FILES = Path("misc", "used_voiced_recordings.csv")
+PATH_DATASET_LISTS = Path("dataset_lists")
+PATH_DATASET_LISTS.mkdir(exist_ok=True)
 
 # Creating the dataset folder
 PATH_DATASETS = Path("datasets")
@@ -83,6 +85,9 @@ def split_scenario_1(db: str, ext_val_samples: dict):
     for _, row in tqdm(data.iterrows(), total=data.shape[0]):
         shutil.copy(src=row["source_path"], dst=row["destination_path"])
 
+    # Save the information about the source and destination paths to the dataset_lists folder
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_1.csv"),
+                                                     index=False)
 
 # Scenario 2 - random segment from each recording goes to the test set
 def split_scenario_2(db: str, ext_val_samples: dict):
@@ -120,3 +125,7 @@ def split_scenario_2(db: str, ext_val_samples: dict):
     print(f"Copying data for {db}_scenario_2...")
     for _, row in tqdm(data.iterrows(), total=data.shape[0]):
         shutil.copy(src=row["source_path"], dst=row["destination_path"])
+
+    # Save the information about the source and destination paths to the dataset_lists folder
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_2.csv"),
+                                                     index=False)
