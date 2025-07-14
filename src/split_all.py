@@ -249,6 +249,5 @@ def split_scenario_4_svd_6(ext_val_samples: dict, exclude_duplicates=False):
         shutil.copy(src=row["source_path"], dst=row["destination_path"])
 
     # Save the information about the source and destination paths to the dataset_lists folder
-    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"Copying data for "
-                                                                                 f"svd_scenario_{scenario_number}.csv"),
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"svd_scenario_{scenario_number}.csv"),
                                                      index=False)
