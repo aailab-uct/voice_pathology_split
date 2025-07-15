@@ -16,7 +16,7 @@ MODELS = ["yolov8n-cls.pt",
           "yolov8l-cls.pt",
           "yolov8x-cls.pt"]
 
-EPOCHS = 300
+EPOCHS = 3
 
 def run_experiments():
     results_table = pd.DataFrame(columns=["scenario", "size",
@@ -61,7 +61,7 @@ def run_experiments():
                 SEN = TP / (TP + FN)
                 SPE = TN / (TN + FP)
                 UAR = (SEN + SPE) / 2
-                row.append([ACC, UAR, TP, FP, TN, FN])
+                row += [ACC, UAR, TP, FP, TN, FN]
 
             results_table.loc[len(results_table.index)] = [scenario, model_name] + row
             results_table.to_csv("segmentation_leakage_results.csv")
