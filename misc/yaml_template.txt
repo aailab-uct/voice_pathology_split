@@ -1,5 +1,0 @@
-train: datasets/{path_to_data}/train/
-val: datasets/{path_to_data}/test/
-test: datasets/{path_to_data}/test/
-
-nc: 2

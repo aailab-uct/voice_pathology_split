@@ -1,5 +1,0 @@
-train: datasets/segmentation_leakage_recording_wise_split_svd/train/
-val: datasets/segmentation_leakage_recording_wise_split_svd/test/
-test: datasets/segmentation_leakage_recording_wise_split_svd/test/
-
-nc: 2
