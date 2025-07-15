@@ -9,7 +9,6 @@ import pandas as pd
 
 PATH_DATASETS = Path("datasets")
 BASE_DIR = Path(__file__).resolve().parent.parent
-PATH_YAML = Path("misc", "yaml_template.txt")
 MODELS = ["yolov8n-cls.pt",
           "yolov8s-cls.pt",
           "yolov8m-cls.pt",

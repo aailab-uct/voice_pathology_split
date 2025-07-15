@@ -1,14 +1,11 @@
 """
-Module with various data preprocessing functions.
+A reused module with a function that generates spectrogram out of audio values in the form of numpy array.
 """
-import shutil
 from pathlib import Path
 import matplotlib.pyplot as plt
 from scipy import signal
 from scipy.io import wavfile
 import numpy as np
-
-from src.utils.octave_filter_bank import octave_filtering
 
 
 def wav2spectrogram(chunk: np.array, destination_path: Path, fft_window_length: int, fft_overlap: int,
@@ -47,27 +44,3 @@ def wav2spectrogram(chunk: np.array, destination_path: Path, fft_window_length: 
     plt.savefig(destination_path, format="png",
                 bbox_inches='tight', pad_inches=0, dpi=dpi)
     plt.close("all")
-
-def txt2wav(source_path: Path, destination_path: Path, sample_rate: int, chunks: int = 1):
-    """
-    Converts voiced db, where data files are text files, cointaining wav sample values.
-    :param source_path: path to voiced database txt files
-    :param destination_path: path to destination folder
-    :param sample_rate: target wav sample rate
-    :param chunks: number of chunks -> each txt is divided to multiple wav files
-    :return: None
-    """
-    destination_path.mkdir(parents=True, exist_ok=True)
-    # print(source_path)
-    txt_data = np.loadtxt(source_path)
-    if chunks > 1:
-        wav_chunks = np.array_split(txt_data, chunks)
-        wav_chunks.pop(0)  # to remove bad data at start
-    else:
-        wav_chunks = np.array_split(txt_data, chunks)
-
-    for idx, wav_chunk in enumerate(wav_chunks):
-        chunk_path = destination_path.joinpath(f"{source_path.stem}_{idx:05d}.wav")
-        if not chunk_path.is_file():
-            # print(f"creating {chunk_path}")
-            wavfile.write(filename=chunk_path, rate=sample_rate, data=wav_chunk)
