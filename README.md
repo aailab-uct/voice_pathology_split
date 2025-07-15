@@ -5,8 +5,8 @@ Leakage in Machine Learning for Voice Pathology Detection" by Jakub Steinbach, T
 Jirsa, Jiří Ingr, Zuzana Urbániová, Laura Verde, Zuzana Sedláková, Martin Chovanec, 
 Zhang Zhang, Noriyasu Homma, Jan Vrba.
 
-## Requirements
-<span style="color:crimson;font-weight:bold">TODO: Update requirements!</span>
+## <span style="color:crimson;font-weight:bold">!!!UPDATE!!!</span> Requirements <span style="color:crimson;font-weight:bold">!!!UPDATE!!!</span>
+
 
 For running experiments
 - Nvidia GPU (for speed reasons)
