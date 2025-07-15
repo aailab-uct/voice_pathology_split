@@ -1,7 +1,7 @@
 """
-Dataset generation script for segmentation leakage experiments.
+Dataset generation module for segmentation leakage experiments.
 
-This script organizes spectrogram images into multiple dataset splits to simulate
+This module organizes spectrogram images into multiple dataset splits to simulate
 different segmentation leakage scenarios. It generates controlled, random, and patient-oriented
 splits for both SVD and VOICED datasets, with optional external validation samples.
 
