@@ -16,7 +16,7 @@ MODELS = ["yolov8n-cls.pt",
           "yolov8l-cls.pt",
           "yolov8x-cls.pt"]
 
-EPOCHS = 3
+EPOCHS = 300
 
 def run_experiments():
     results_table = pd.DataFrame(columns=["scenario", "size",
