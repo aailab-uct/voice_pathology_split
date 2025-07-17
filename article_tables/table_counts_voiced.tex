@@ -1,15 +1,14 @@
 \begin{table}
     \centering
-    \tiny
-    \begin{tabular}{lrrrrr}
+    \begin{tabular}{lrrrrrrr}
         \toprule
-        \multirow{2}{*}{Split strategy} & \multicolumn{2}{c}{Pathological segments count} & \multicolumn{2}{c}{Healthy segments count} & \multirow{2}{*}{Test split ratio} \\
-        & Training set & Test set & Training set & Test set & \\
+        \multirow{2}{*}{Scenario} & \multicolumn{3}{c}{Pathological segments count} & \multicolumn{3}{c}{Healthy segments count} & \multirow{2}{*}{Test split ratio} \\
+        & Training set & Test set & External validation & Training set & Test set & External validation & \\
         \midrule
-            random train-test split & 1204 & 155 & 459 & 54 & 0.1116 \\
-			random segment of each recording in the test set & 1208 & 151 & 456 & 57 & 0.1111 \\
-			patient-wise split & 1215 & 144 & 441 & 72 & 0.1154 \\
-			fifth segment of each recording in the test set & 1208 & 151 & 456 & 57 & 0.1111 \\
+            scenario 1 & 1269 & 141 & 10 & 423 & 47 & 10 & 0.1000 \\
+			scenario 2 & 1269 & 141 & 10 & 423 & 47 & 10 & 0.1000 \\
+			scenario 3 & 1262 & 148 & 10 & 430 & 40 & 10 & 0.1000 \\
+			scenario 4 & 1270 & 140 & 10 & 420 & 50 & 10 & 0.1011 \\
         \bottomrule
     \end{tabular}
     \caption{Counts of segments based on the split strategies for VOICED}

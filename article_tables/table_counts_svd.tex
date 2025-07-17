@@ -1,17 +1,16 @@
 \begin{table}
     \centering
-    \tiny
-    \begin{tabular}{lrrrrr}
+    \begin{tabular}{lrrrrrrr}
         \toprule
-        \multirow{2}{*}{Split strategy} & \multicolumn{2}{c}{Pathological segments count} & \multicolumn{2}{c}{Healthy segments count} & \multirow{2}{*}{Test split ratio} \\
-        & Training set & Test set & Training set & Test set & \\
+        \multirow{2}{*}{Scenario} & \multicolumn{3}{c}{Pathological segments count} & \multicolumn{3}{c}{Healthy segments count} & \multirow{2}{*}{Test split ratio} \\
+        & Training set & Test set & External validation & Training set & Test set & External validation & \\
         \midrule
-            random train-test split & 10586 & 1357 & 5525 & 658 & 0.1112 \\
-			random segment of each recording in the test set & 10616 & 1327 & 5496 & 687 & 0.1111 \\
-			recording-wise split & 10647 & 1296 & 5463 & 720 & 0.1112 \\
-			fifth segment of each recording in the test set & 10616 & 1327 & 5496 & 687 & 0.1111 \\
-			patient-wise split with duplicite recordings & 10629 & 1314 & 5481 & 702 & 0.1112 \\
-			patient-wise split without duplicite recordings & 7956 & 1008 & 5454 & 675 & 0.1115 \\
+            scenario 1 & 11835 & 1315 & 10 & 6111 & 679 & 10 & 0.1000 \\
+			scenario 2 & 11835 & 1315 & 10 & 6111 & 679 & 10 & 0.1000 \\
+			scenario 3 & 11838 & 1312 & 10 & 6108 & 682 & 10 & 0.1000 \\
+			scenario 4 & 11770 & 1380 & 10 & 6170 & 620 & 10 & 0.1003 \\
+			scenario 5 & 11800 & 1350 & 10 & 6150 & 640 & 10 & 0.0998 \\
+			scenario 6 & 8770 & 1070 & 10 & 6140 & 590 & 10 & 0.1002 \\
         \bottomrule
     \end{tabular}
     \caption{Counts of segments based on the split strategies for SVD}

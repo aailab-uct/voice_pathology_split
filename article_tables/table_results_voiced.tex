@@ -1,29 +1,33 @@
 \begin{table*}
     \centering
-    \begin{tabular}{llrrrrrrr}
+    \begin{tabular}{llrrrrrrrrrrrr}
         \toprule
-         Split strategy & Architecture & ACC & SPE & SEN & TN & TP & FN & FP \\
-            \midrule
-			\multirow{5}{10em}{sixth segment of each recording in the test set} & yolov8n-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
-			 & yolov8s-cls.pt & 0.9952 & 1.0000 & 0.9934 & 56 & 151 & 1 & 0 \\
-			 & yolov8m-cls.pt & 0.9952 & 1.0000 & 0.9934 & 56 & 151 & 1 & 0 \\
-			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
-			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\\midrule
-			\multirow{5}{10em}{random segment of each recording in the test set} & yolov8n-cls.pt & 0.9856 & 0.9655 & 0.9933 & 56 & 149 & 1 & 2 \\
-			 & yolov8s-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
-			 & yolov8m-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
-			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\
-			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 1.0000 & 57 & 151 & 0 & 0 \\\midrule
-			\multirow{5}{10em}{random train-test split} & yolov8n-cls.pt & 0.9904 & 0.9815 & 0.9935 & 53 & 154 & 1 & 1 \\
-			 & yolov8s-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\
-			 & yolov8m-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\
-			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\
-			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 1.0000 & 54 & 155 & 0 & 0 \\\midrule
-			\multirow{5}{10em}{patient-wise split} & yolov8n-cls.pt & 0.6991 & 0.8889 & 0.6908 & 8 & 143 & 64 & 1 \\
-			 & yolov8s-cls.pt & 0.7130 & 0.8125 & 0.7050 & 13 & 141 & 59 & 3 \\
-			 & yolov8m-cls.pt & 0.6713 & 0.5556 & 0.6763 & 5 & 140 & 67 & 4 \\
-			 & yolov8l-cls.pt & 0.6944 & 0.5882 & 0.7143 & 20 & 130 & 52 & 14 \\
-			 & yolov8x-cls.pt & 0.7083 & 0.7368 & 0.7056 & 14 & 139 & 58 & 5 \\
+         \multirow{2}{*}{Scenario} & \multirow{2}{*}{Size} & \multicolumn{6}{c}{Test subset} & \multicolumn{6}{c}{External validation} \\
+         & & ACC & UAR & TN & TP & FN & FP & ACC & UAR & TN & TP & FN & FP \\
+        \midrule
+            \multirow{5}{*}{scenario 1} & yolov8n-cls.pt & 1.0000 & 1.0000 & 141 & 0 & 47 & 0 & 0.4500 & 0.4020 & 8 & 2 & 1 & 9 \\
+			 & yolov8s-cls.pt & 1.0000 & 1.0000 & 141 & 0 & 47 & 0 & 0.6500 & 0.7000 & 9 & 1 & 4 & 6 \\
+			 & yolov8m-cls.pt & 1.0000 & 1.0000 & 141 & 0 & 47 & 0 & 0.4000 & 0.2222 & 8 & 2 & 0 & 10 \\
+			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 141 & 0 & 47 & 0 & 0.5500 & 0.5980 & 9 & 1 & 2 & 8 \\
+			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 141 & 0 & 47 & 0 & 0.4500 & 0.2368 & 9 & 1 & 0 & 10 \\
+			\midrule
+			\multirow{5}{*}{scenario 2} & yolov8n-cls.pt & 0.9947 & 0.9965 & 141 & 0 & 46 & 1 & 0.6000 & 0.7778 & 10 & 0 & 2 & 8 \\
+			 & yolov8s-cls.pt & 0.9894 & 0.9930 & 141 & 0 & 45 & 2 & 0.5500 & 0.7632 & 10 & 0 & 1 & 9 \\
+			 & yolov8m-cls.pt & 0.9947 & 0.9965 & 141 & 0 & 46 & 1 & 0.4500 & 0.4020 & 8 & 2 & 1 & 9 \\
+			 & yolov8l-cls.pt & 0.9947 & 0.9965 & 141 & 0 & 46 & 1 & 0.4000 & 0.3810 & 6 & 4 & 2 & 8 \\
+			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 141 & 0 & 47 & 0 & 0.5000 & 0.5000 & 8 & 2 & 2 & 8 \\
+			\midrule
+			\multirow{5}{*}{scenario 3} & yolov8n-cls.pt & 0.9947 & 0.9966 & 148 & 0 & 39 & 1 & 0.5000 & 0.5000 & 8 & 2 & 2 & 8 \\
+			 & yolov8s-cls.pt & 1.0000 & 1.0000 & 148 & 0 & 40 & 0 & 0.4500 & 0.4020 & 8 & 2 & 1 & 9 \\
+			 & yolov8m-cls.pt & 1.0000 & 1.0000 & 148 & 0 & 40 & 0 & 0.4500 & 0.4333 & 7 & 3 & 2 & 8 \\
+			 & yolov8l-cls.pt & 1.0000 & 1.0000 & 148 & 0 & 40 & 0 & 0.5500 & 0.5980 & 9 & 1 & 2 & 8 \\
+			 & yolov8x-cls.pt & 1.0000 & 1.0000 & 148 & 0 & 40 & 0 & 0.5000 & 0.5000 & 9 & 1 & 1 & 9 \\
+			\midrule
+			\multirow{5}{*}{scenario 4} & yolov8n-cls.pt & 0.7316 & 0.5703 & 137 & 3 & 2 & 48 & 0.5500 & 0.7632 & 10 & 0 & 1 & 9 \\
+			 & yolov8s-cls.pt & 0.7474 & 0.6603 & 131 & 9 & 11 & 39 & 0.5000 & 0.0000 & 10 & 0 & 0 & 10 \\
+			 & yolov8m-cls.pt & 0.7421 & 0.6730 & 138 & 2 & 3 & 47 & 0.5000 & 0.0000 & 10 & 0 & 0 & 10 \\
+			 & yolov8l-cls.pt & 0.7368 & 0.0000 & 140 & 0 & 0 & 50 & 0.5000 & 0.0000 & 10 & 0 & 0 & 10 \\
+			 & yolov8x-cls.pt & 0.7368 & 0.0000 & 140 & 0 & 0 & 50 & 0.5500 & 0.7632 & 10 & 0 & 1 & 9 \\
         \bottomrule
     \end{tabular}
     \caption{Classification results for VOICED}
