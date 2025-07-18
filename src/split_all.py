@@ -51,24 +51,24 @@ PATH_USED_SVD_FILES = Path("misc", "used_svd_recordings.csv")
 PATH_USED_VOICED_FILES = Path("misc", "used_voiced_recordings.csv")
 
 # Where the resulting dataset lists (source -> destination mappings) are stored
-PATH_DATASET_LISTS = Path("dataset_lists")
+PATH_DATASET_LISTS = Path("dataset_lists_variance_test")
 PATH_DATASET_LISTS.mkdir(exist_ok=True)
 
 # Prepare main dataset output folder (clean start)
-PATH_DATASETS = Path("datasets")
-if PATH_DATASETS.exists():
-    shutil.rmtree(PATH_DATASETS)
-PATH_DATASETS.mkdir()
-
-# Create basic subfolder structure for each scenario in both SVD and VOICED
-dbs = ["svd", "voiced"]
-for db in dbs:
-    max_scenario = 7 if db == "svd" else 5
-    for i in range(1, max_scenario):
-        scenario_folder = PATH_DATASETS.joinpath(f"{db}_scenario_{i}")
-        for subset in ["train", "test", "val"]:
-            for health_state in ["healthy", "pathological"]:
-                scenario_folder.joinpath(subset, health_state).mkdir(parents=True)
+PATH_DATASETS = Path("datasets_variance_test")
+# if PATH_DATASETS.exists():
+#     shutil.rmtree(PATH_DATASETS)
+# PATH_DATASETS.mkdir()
+#
+# # Create basic subfolder structure for each scenario in both SVD and VOICED
+# dbs = ["svd", "voiced"]
+# for db in dbs:
+#     max_scenario = 7 if db == "svd" else 5
+#     for i in range(1, max_scenario):
+#         scenario_folder = PATH_DATASETS.joinpath(f"{db}_scenario_{i}")
+#         for subset in ["train", "test", "val"]:
+#             for health_state in ["healthy", "pathological"]:
+#                 scenario_folder.joinpath(subset, health_state).mkdir(parents=True)
 
 def sample_ext_validation():
     """
@@ -310,7 +310,7 @@ def split_scenario_3(db: str, ext_val_samples: dict):
                                                      index=False)
 
 
-def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict):
+def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict, index: int):
     """
     Scenario 4 (VOICED) and Scenario 5 (SVD): Patient/record-oriented random split.
 
@@ -370,17 +370,23 @@ def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict):
     # Build destination paths
     scenario_number = 4 if db == "voiced" else 5
     data["destination_path"] = data.apply(
-        lambda row: Path("datasets", f"{db}_scenario_{scenario_number}", row["subset"], row["class"], row["name"]),
+        lambda row: PATH_DATASETS.joinpath(f"{db}_scenario_{scenario_number}_index_{index}", row["subset"], row["class"], row["name"]),
         axis=1
     )
 
+    # Create the directory for the dataset
+    scenario_folder = PATH_DATASETS.joinpath(f"{db}_scenario_{scenario_number}_index_{index}")
+    for subset in ["train", "test", "val"]:
+        for health_state in ["healthy", "pathological"]:
+            scenario_folder.joinpath(subset, health_state).mkdir(parents=True)
+
     # Copy files from the source path to the destination path
-    print(f"Copying data for {db}_scenario_{scenario_number}...")
+    print(f"Copying data for {db}_scenario_{scenario_number}_index_{index}...")
     for _, row in tqdm(data.iterrows(), total=data.shape[0]):
         shutil.copy(src=row["source_path"], dst=row["destination_path"])
 
     # Save the mapping source -> destination
-    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_{scenario_number}.csv"),
+    data[["source_path", "destination_path"]].to_csv(PATH_DATASET_LISTS.joinpath(f"{db}_scenario_{scenario_number}_index_{index}.csv"),
                                                      index=False)
 
 

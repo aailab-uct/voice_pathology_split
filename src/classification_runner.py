@@ -17,13 +17,14 @@ from pathlib import Path
 from ultralytics import YOLO
 import pandas as pd
 
-PATH_DATASETS = Path("datasets")
+PATH_DATASETS = Path("datasets_variance_test")
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODELS = ["yolov8n-cls.pt",
-          "yolov8s-cls.pt",
-          "yolov8m-cls.pt",
-          "yolov8l-cls.pt",
-          "yolov8x-cls.pt"]
+          # "yolov8s-cls.pt",
+          # "yolov8m-cls.pt",
+          # "yolov8l-cls.pt",
+          # "yolov8x-cls.pt"
+          ]
 
 EPOCHS = 300
 
@@ -97,4 +98,4 @@ def run_experiments():
             # Append one row (scenario + model size + metrics)
             results_table.loc[len(results_table.index)] = [scenario, model_name] + row
             # Save cumulative results after each experiment
-            results_table.to_csv("segmentation_leakage_results.csv")
+            results_table.to_csv("segmentation_leakage_results_variance_test.csv")
