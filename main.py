@@ -136,4 +136,4 @@ if __name__ == "__main__":
     #     split_scenario_4_svd_6(ext_val_samples, exclude_duplicates=boolean)
 
     # Run YOLOv8 classification experiments on all scenarios
-    # run_experiments()
+    run_experiments()
