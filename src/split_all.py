@@ -361,7 +361,7 @@ def split_scenario_4_voiced_5_svd(db: str, ext_val_samples: dict, index: int):
     # Random train-val split
     #  - randomly sample 90% of the remaining recordings for the training subset
     unique_recordings = pd.Series(data.loc[pd.isna(data["subset"]), "recording_id"].unique())
-    sampled_recordings = unique_recordings.sample(frac=0.9, random_state=42).tolist()
+    sampled_recordings = unique_recordings.sample(frac=0.9, random_state=index).tolist()
 
     #  - change the subset for the remaining recordings based on random sampling
     data.loc[data["recording_id"].isin(sampled_recordings), "subset"] = "train"
