@@ -118,16 +118,16 @@ if __name__ == "__main__":
     ext_val_samples = sample_ext_validation()
 
     # Prepare datasets for scenarios 1-3, 4 (VOICED), and 5 (SVD)
-    for i in range(10):
-        for db in ["svd", "voiced"]:
-            # Scenario 1 -> fixed 5th segment (0004) for val/test
-            # split_scenario_1(db, ext_val_samples)
-            # Scenario 2 -> one random segment per recording for val
-            # split_scenario_2(db, ext_val_samples)
-            # Scenario 3 -> fully random segment split
-            # split_scenario_3(db, ext_val_samples)
-            # Scenario 4 (VOICED) / 5 (SVD) -> patient/record-oriented split
-            split_scenario_4_voiced_5_svd(db, ext_val_samples, i)
+    # for i in range(10):
+    #     for db in ["svd", "voiced"]:
+    #         # Scenario 1 -> fixed 5th segment (0004) for val/test
+    #         # split_scenario_1(db, ext_val_samples)
+    #         # Scenario 2 -> one random segment per recording for val
+    #         # split_scenario_2(db, ext_val_samples)
+    #         # Scenario 3 -> fully random segment split
+    #         # split_scenario_3(db, ext_val_samples)
+    #         # Scenario 4 (VOICED) / 5 (SVD) -> patient/record-oriented split
+    #         split_scenario_4_voiced_5_svd(db, ext_val_samples, i)
 
     # Prepare datasets for scenarios 4 (SVD) and 6
     #  - exclude_duplicates = False -> patient-level with all available recordings (Scenario 4)

@@ -63,7 +63,7 @@ def run_experiments():
     for scenario in scenarios:
         for model_name in MODELS:
             # Dataset path for YOLO model
-            dataset_path = BASE_DIR.joinpath("datasets", scenario)
+            dataset_path = BASE_DIR.joinpath("datasets_variance_test", scenario)
             # Initialize pre-trained YOLO model
             model = YOLO(Path("models", model_name))
             # Train the model on the dataset scenario
